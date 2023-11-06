@@ -2,6 +2,6 @@ import React from 'react'
 
 export default function Home() {
   return (
-    <div>Home</div>
+    <h1 style={{paddingTop: "100px"}}>Home</h1>
   )
 }
