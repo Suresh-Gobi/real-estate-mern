@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const userRoutes = require("./routes/UserRoute.routes.js"); 
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ mongoose
   });
 
 const app = express();
+app.use("/api/users", userRoutes);
 
 const port = 5000;
 app.listen(port, () => {
