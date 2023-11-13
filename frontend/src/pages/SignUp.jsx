@@ -1,17 +1,47 @@
-import React from "react";
-import { Button, Card, Form, Input, Typography } from "antd";
+import React, { useState } from "react";
+import { Button, Card, Form, Input, Typography, notification } from "antd";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const { Text } = Typography;
 
-const onFinish = (values) => {
-  console.log("Success:", values);
-};
+const SignUp = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-const onFinishFailed = (errorInfo) => {
-  console.log("Failed:", errorInfo);
-};
+  const openNotification = (type, message, description) => {
+    notification[type]({
+      message,
+      description,
+    });
+  };
 
-export default function SignUp() {
+  const onFinish = async (values) => {
+    try {
+      setLoading(true);
+
+      const response = await axios.post("api/auth/signup", values);
+
+      console.log("Success:", response.data);
+      openNotification("success", "Signup Successful", "You have successfully signed up!");
+      navigate("/signin");
+    } catch (error) {
+      console.error("Failed:", error.response.data);
+
+      if (error.response && error.response.data && error.response.data.error) {
+        openNotification("error", "Signup Failed", error.response.data.error);
+      } else {
+        openNotification("error", "Signup Failed", "An unexpected error occurred.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
   return (
     <div className="flex items-center justify-center h-screen">
       <Card
@@ -45,7 +75,7 @@ export default function SignUp() {
                 message: "Please input your username!",
               },
             ]}
-            labelAlign="left" // Left-align the label text
+            labelAlign="left"
           >
             <Input className="w-full" />
           </Form.Item>
@@ -59,7 +89,7 @@ export default function SignUp() {
                 message: "Please input your email!",
               },
             ]}
-            labelAlign="left" // Left-align the label text
+            labelAlign="left"
           >
             <Input className="w-full" />
           </Form.Item>
@@ -73,7 +103,7 @@ export default function SignUp() {
                 message: "Please input your password!",
               },
             ]}
-            labelAlign="left" // Left-align the label text
+            labelAlign="left"
           >
             <Input.Password className="w-full" />
           </Form.Item>
@@ -87,17 +117,20 @@ export default function SignUp() {
             <Button
               type="primary"
               htmlType="submit"
-              className="w-full bg-blue-500 hover:bg-blue-700"
+              className="w-40 bg-blue-500 hover:bg-blue-700 items-center justify-center flex"
+              loading={loading}
             >
-              Signup
+              {loading ? "Loading..." : "Signup"}
             </Button>
           </Form.Item>
         </Form>
-        <hr/>
+        <hr />
         <Text className="flex items-center justify-center pt-5">
-          Already have an account? <a href="/Signin"> Sign-in</a>
+          Already have an account? <a href="/signin">Sign-in</a>
         </Text>
       </Card>
     </div>
   );
-}
+};
+
+export default SignUp;
