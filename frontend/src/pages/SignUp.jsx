@@ -23,15 +23,29 @@ const SignUp = () => {
       const response = await axios.post("api/auth/signup", values);
 
       console.log("Success:", response.data);
-      openNotification("success", "Signup Successful", "You have successfully signed up!");
-      navigate("/signin");
+
+      openNotification(
+        "success",
+        "Signup Successful",
+        "You have successfully signed up!"
+      );
+
+      openNotification(
+        "info",
+        "Email Verification",
+        "Email verification link has been sent to your email."
+      );
     } catch (error) {
       console.error("Failed:", error.response.data);
 
       if (error.response && error.response.data && error.response.data.error) {
         openNotification("error", "Signup Failed", error.response.data.error);
       } else {
-        openNotification("error", "Signup Failed", "An unexpected error occurred.");
+        openNotification(
+          "error",
+          "Signup Failed",
+          "An unexpected error occurred."
+        );
       }
     } finally {
       setLoading(false);
@@ -101,6 +115,10 @@ const SignUp = () => {
               {
                 required: true,
                 message: "Please input your password!",
+              },
+              {
+                min: 8,
+                message: "Password must be at least 8 characters long!",
               },
             ]}
             labelAlign="left"
