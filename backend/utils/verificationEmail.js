@@ -25,7 +25,7 @@ const sendVerificationEmail = (email, otp) => {
         <h1 style="color: #333; text-align: center;">Email Verification</h1>
         <p style="color: #666; font-size: 16px;">Your account has been created successfully.</p>
         <p style="color: #666; font-size: 16px;">In order to complete your registration, please verify your email address by clicking the button below:</p>
-        <a href="http://localhost:3000/verify?token=${otp}" style="display: inline-block; padding: 12px 24px; background-color: #007BFF; color: #fff; text-decoration: none; font-size: 18px; border-radius: 5px; margin-top: 20px;">Verify Email</a>
+        <a href="http://127.0.0.1:5173/sign-up/verify/${otp}" style="display: inline-block; padding: 12px 24px; background-color: #007BFF; color: #fff; text-decoration: none; font-size: 18px; border-radius: 5px; margin-top: 20px;">Verify Email</a>
       </div>
     `,
   };

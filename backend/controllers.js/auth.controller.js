@@ -30,6 +30,28 @@ const signup = async (req, res, next) => {
   }
 };
 
+const verifyEmail = async (req, res, next) => {
+  try {
+    const { otp } = req.body;
+
+    const user = await User.findOne({ otp });
+
+    if (!user) {
+      return res.status(404).json({ error: "Invalid verification token" });
+    }
+
+    user.verified = true;
+    await user.save();
+
+    res.status(200).json({ message: "Email verification successful" });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
+
 module.exports = {
   signup,
+  verifyEmail,
 };
